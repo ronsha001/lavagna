@@ -1,0 +1,6 @@
+
+# IGNORE FILES
+demo.Dockerfile
+Dockerfile
+
+init.sh
