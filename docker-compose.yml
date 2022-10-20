@@ -1,0 +1,32 @@
+volumes:
+  saveLavDB:
+
+services:
+  app:
+    build: .
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      mysql_db:
+        condition: service_healthy
+
+  mysql_db:
+    container_name: db
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+      MYSQL_DATABASE: lavagna
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=pass --execute \"SHOW DATABASES;\""
+      interval: 1s
+      timeout: 1s
+      retries: 20
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
+      - saveLavDB:/var/lib/mysql
+
+
+  
+  

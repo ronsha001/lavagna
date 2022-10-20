@@ -2,5 +2,5 @@
 # IGNORE FILES
 demo.Dockerfile
 Dockerfile
-
+docker-compose.yml
 init.sh

@@ -1,9 +1,9 @@
 #!/bin/sh
 
-DB_DIALECT="HSQLDB"
-DB_URL="jdbc:hsqldb:file:lavagna"
-DB_USER="sa"
-DB_PASS=""
+DB_DIALECT="MYSQL"
+DB_URL="jdbc:mysql://db:3306/lavagna"
+DB_USER="root"
+DB_PASS="pass"
 SPRING_PROFILE="dev"
 
 
