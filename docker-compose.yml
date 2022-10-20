@@ -1,35 +1,32 @@
 volumes:
-  db_data:
+  sql_db:
 
 services:
-  app:
-    build: .
+  
+  mysql_db:
+    image: mysql:5.7.40-debian
+    container_name: mysql_db
     restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: pass
+      MYSQL_DATABASE: lavagna
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=pass --execute \"SHOW DATABASES;\""
+      interval: 1s
+      timeout: 1s
+      retries: 20
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
+      - sql_db:/var/lib/mysql
+
+  maven_app:
+    build: .
+      # context: .
+    restart: always
+    # environment:
+    #   spring.datasource.url: "jdbc:mysql://mysql_db:3306/lavagna"
     ports:
       - 8080:8080
     depends_on:
-      db:
+      mysql_db:
         condition: service_healthy
-
-  db:
-    container_name: db
-    image: mysql:5.7
-    command:
-      - mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-      - mysql -u root -e 'CREATE DATABASE lavagna CHARACTER SET utf8 COLLATE utf8_bin;'
-    ports:
-      - 3306:3360
-    volumes:
-      - db_data:/var/lib/mysql/
-      - ./src/main/resources/io/lavagna/db/MYSQL:/docker-entrypoint-initdb.d
-    environment:
-      MYSQL_DATABASE: lavagna
-      MYSQL_USER: sa
-      MYSQL_PASSWORD: superpass
-      MYSQL_ROOT_PASSWORD: superpass
-    # networks:
-    #   - back-end
-
-
-  
-  
