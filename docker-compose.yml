@@ -1,5 +1,5 @@
 volumes:
-  saveLavDB:
+  db_data:
 
 services:
   app:
@@ -8,24 +8,27 @@ services:
     ports:
       - 8080:8080
     depends_on:
-      mysql_db:
+      db:
         condition: service_healthy
 
-  mysql_db:
+  db:
     container_name: db
     image: mysql:5.7
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: pass
-      MYSQL_DATABASE: lavagna
-    healthcheck:
-      test: "/usr/bin/mysql --user=root --password=pass --execute \"SHOW DATABASES;\""
-      interval: 1s
-      timeout: 1s
-      retries: 20
+    command:
+      - mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+      - mysql -u root -e 'CREATE DATABASE lavagna CHARACTER SET utf8 COLLATE utf8_bin;'
+    ports:
+      - 3306:3360
     volumes:
-      - ./db:/docker-entrypoint-initdb.d
-      - saveLavDB:/var/lib/mysql
+      - db_data:/var/lib/mysql/
+      - ./src/main/resources/io/lavagna/db/MYSQL:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_DATABASE: lavagna
+      MYSQL_USER: sa
+      MYSQL_PASSWORD: superpass
+      MYSQL_ROOT_PASSWORD: superpass
+    # networks:
+    #   - back-end
 
 
   

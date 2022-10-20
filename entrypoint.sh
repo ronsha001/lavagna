@@ -1,9 +1,9 @@
 #!/bin/sh
 
 DB_DIALECT="MYSQL"
-DB_URL="jdbc:mysql://db:3306/lavagna"
-DB_USER="root"
-DB_PASS="pass"
+DB_URL="jdbc:mysql://db:3306/lavagna?useSSL=false"
+DB_USER="sa"
+DB_PASS="superpass"
 SPRING_PROFILE="dev"
 
 
