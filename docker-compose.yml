@@ -2,7 +2,17 @@ volumes:
   sql_db:
 
 services:
-  
+  nginx:
+    image: nginx:alpine
+    restart: always
+    depends_on:
+      - maven_app
+    ports:
+      - 80:80
+    volumes:
+      - ./src/main/webapp:/etc/nginx/statics
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+
   mysql_db:
     image: mysql:5.7.40-debian
     container_name: mysql_db
@@ -20,13 +30,9 @@ services:
       - sql_db:/var/lib/mysql
 
   maven_app:
+    container_name: maven_app
     build: .
-      # context: .
     restart: always
-    # environment:
-    #   spring.datasource.url: "jdbc:mysql://mysql_db:3306/lavagna"
-    ports:
-      - 8080:8080
     depends_on:
       mysql_db:
         condition: service_healthy
