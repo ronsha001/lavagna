@@ -12,6 +12,8 @@ services:
     volumes:
       - ./src/main/webapp:/etc/nginx/statics
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - front
 
   mysql_db:
     image: mysql:5.7.40-debian
@@ -28,6 +30,8 @@ services:
     volumes:
       - ./db:/docker-entrypoint-initdb.d
       - sql_db:/var/lib/mysql
+    networks:
+      - back
 
   maven_app:
     container_name: maven_app
@@ -36,3 +40,10 @@ services:
     depends_on:
       mysql_db:
         condition: service_healthy
+    networks:
+      - front
+      - back
+
+networks:
+  front:
+  back:
