@@ -569,6 +569,7 @@
                 <configuration>
                     <srcDir>${basedir}/src/main/stampo</srcDir>
                     <outputDir>${project.build.directory}/lavagna/help/</outputDir>
+                    <hostname>0.0.0.0</hostname>
                     <port>45001</port>
                 </configuration>
             </plugin>

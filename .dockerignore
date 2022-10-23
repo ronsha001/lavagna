@@ -2,6 +2,7 @@
 # IGNORE FILES
 demo.Dockerfile
 Dockerfile
+Dokcerfile.docu
 docker-compose.yml
 init.sh
 target
